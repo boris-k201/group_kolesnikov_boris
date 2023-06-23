@@ -56,13 +56,13 @@ void Game::check_for_endgame() {
             } else if (playerAnswers[playerCode] == maxValue)
                 maxKeys.append(playerCode);
         }
-        for (int playerCode : players.keys())
+        for (int playerCode : players.keys()) {
             if (maxKeys.indexOf(playerCode) != -1)
                 MyTcpServer::getInstance()->writeSocket(playerCode, "win");
-            else {
+            else
                 MyTcpServer::getInstance()->writeSocket(playerCode, "lost");
-                logout(playerCode);
-            }
+            logout(playerCode);
+        }
         QString filename = "results.txt";
         QFile file(filename);
         if (file.open(QIODevice::Append)) {
