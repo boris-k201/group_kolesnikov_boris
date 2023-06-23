@@ -103,22 +103,19 @@ void DataBase::printTable(const QList<QMap<QString, QString>>& table)
 void DataBase::add_loss(QString login) {
     if (!does_player_exist(login))
         add_player(login);
-    QVector<QMap<QString, QString>> result = db_request(QString("UPDATE STATS SET losses += 1 WHERE LOGIN = '%1'").arg(login));
-    printTable(result);
+    db_request(QString("UPDATE STATS SET losses += 1 WHERE login = '%1'").arg(login));
 }
 void DataBase::add_victory(QString login) {
     if (!does_player_exist(login))
         add_player(login);
-    QSqlQuery query(this->db);
-    query.exec(QString("UPDATE STATS SET victories += 1 WHERE LOGIN = '%1';").arg(login));
+   db_request(QString("UPDATE STATS SET victories += 1 WHERE login = '%1';").arg(login));
 }
 
 void DataBase::add_player(QString login) {
-    QSqlQuery query(this->db);
-    query.exec(QString("INSERT INTO STATS VALUES ('%1', 0, 0);").arg(login));
+    db_request(QString("INSERT INTO STATS(login, victories, losses) VALUES ('%1', 0, 0);").arg(login));
 }
 
 bool DataBase::does_player_exist(QString login) {
-    QVector<QMap<QString, QString>> result = db_request(QString("SELECT COUNT(*) FROM STATS WHERE LOGIN = '%1'").arg(login));
+    QVector<QMap<QString, QString>> result = db_request(QString("SELECT COUNT(*) FROM STATS WHERE login = '%1'").arg(login));
     return result[0]["COUNT(*)"] != "0";
 }
