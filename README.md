@@ -1,4 +1,4 @@
-# group_kolesnikov_boris
+# gameServer
 команды Docker:
 
 docker build -t echoserver .
