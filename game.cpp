@@ -57,20 +57,15 @@ void Game::check_for_endgame() {
                 maxKeys.append(playerCode);
         }
         for (int playerCode : players.keys()) {
-            if (maxKeys.indexOf(playerCode) != -1)
+            if (maxKeys.indexOf(playerCode) != -1) {
                 MyTcpServer::getInstance()->writeSocket(playerCode, "win");
-            else
+                DataBase::getInstance()->add_victory(players[playerCode]);
+            }
+            else {
                 MyTcpServer::getInstance()->writeSocket(playerCode, "lost");
+                DataBase::getInstance()->add_loss(players[playerCode]);
+            }
             logout(playerCode);
-        }
-        QString filename = "results.txt";
-        QFile file(filename);
-        if (file.open(QIODevice::Append)) {
-            QTextStream stream(&file);
-            stream << QDateTime::currentDateTime().toLocalTime().toString() << ": ";
-            for (int playerCode : maxKeys)
-                stream << players[playerCode] << " ";
-            stream << "\n";
         }
         playerAnswers.clear();
     }

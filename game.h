@@ -10,6 +10,7 @@
 #include <QTextStream>
 #include <QDateTime>
 #include "singleton.h"
+#include "database.h"
 
 ///
 /// \brief number_of_players Число игроков
